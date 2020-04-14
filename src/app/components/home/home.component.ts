@@ -1,6 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DataService} from '../../services/data.service';
-import {interval, Subscription} from 'rxjs';
+import {interval, Observable, of, Subscription} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {MarketModel} from '../../models/market.model';
 
 @Component({
   selector: 'app-home',
@@ -10,17 +12,19 @@ import {interval, Subscription} from 'rxjs';
 export class HomeComponent implements OnInit, OnDestroy {
   public subscription: Subscription;
   public marketSummeries;
+  public markets$: Observable<Array<MarketModel>>;
   public filteredData;
-  public marketArray = [ 'USD-BTC', 'USD-ETH', 'USD-BSV', 'USD-USDT', 'USD-LINK', ];
-/*'USD-BTC',*/
+  public marketArray = [ 'USD-BTC', 'USD-ETH', 'USD-BSV', 'USD-USDT', 'USD-LINK', 'USD-DASH', 'USD-DCR', 'USD-TUSD', 'USD-WAXP'];
+/* */
 
 
   public metaInfo;
 
   constructor(private dataService: DataService) {
+    this.getMarkets();
     this.getMarketsSummery();
     this.metaInfo = {
-      chartWidth: '800',
+      chartWidth: (this.marketArray.length * 100 + 100),
       chartHeight: '500',
       title: 'Bittrex current market data by value',
       titleColor: 'white',
@@ -38,9 +42,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit( ) {
-    this.subscription = interval(5000).subscribe(() => {
+    /*this.subscription = interval(5000).subscribe(() => {
       this.getMarketsSummery();
-    });
+    });*/
   }
 
   ngOnDestroy() {
@@ -53,6 +57,17 @@ export class HomeComponent implements OnInit, OnDestroy {
       console.log(this.marketSummeries);
       this.filterData();
     });
+  }
+
+  getMarkets() {
+    this.markets$ = this.dataService.getmarkets().pipe(map(res => res.result));
+  }
+
+  addSerries(marketName) {
+    this.marketArray.push(marketName);
+    console.log(this.marketArray);
+    // this.filterData();
+    this.getMarketsSummery();
   }
 
   filterData() {

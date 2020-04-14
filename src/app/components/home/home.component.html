@@ -1,3 +1,23 @@
-<div *ngIf="filteredData">
-<app-chart [chartData]='filteredData' [chartMetaInfo] = 'metaInfo'></app-chart>
-</div>
+<mat-card class="example-card">
+  <mat-card-header>
+   <!-- <div mat-card-avatar class="example-header-image"></div>-->
+    <mat-card-title>Bittrex Market data</mat-card-title>
+<!--    <mat-card-subtitle>Dog Breed</mat-card-subtitle>-->
+    <h4>Basic mat-select</h4>
+    <mat-form-field>
+      <mat-label>Favorite food</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let market of markets$ | async " [value]="market.MarketName" (click)="addSerries(market.MarketName)">
+          {{market.MarketName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-card-header>
+  <mat-card-content>
+    <app-chart *ngIf="filteredData" [chartData]='filteredData' [chartMetaInfo] = 'metaInfo'></app-chart>
+  </mat-card-content>
+  <mat-card-actions>
+  <!--  <button mat-button>LIKE</button>
+    <button mat-button>SHARE</button>-->
+  </mat-card-actions>
+</mat-card>

@@ -13,27 +13,33 @@ export class ChartComponent implements OnInit, OnChanges {
 
 
   public context;
+  public chartwidth = 1200;
 
   constructor() {
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     this.chartConfig(changes.chartData.currentValue);
+    console.log('changes', changes);
+    this.chartwidth = changes.chartMetaInfo.currentValue.chartWidth;
+    console.log(' this.chartwidth',  this.chartwidth);
   }
 
   ngOnInit() {
     this.chartConfig(this.chartData);
+    this.chartwidth = this.chartMetaInfo.chartWidth;
   }
 
   chartConfig(chartData) {
     const canvas = document.getElementById('chart') as HTMLCanvasElement;
-
+    // canvas.width = this.chartwidth;
     this.context = canvas.getContext('2d');
-
+    // this.context.width = this.chartwidth;
     this.context.fillStyle = '#262a33';
 
     this.context.fillRect(0, 0, this.chartMetaInfo.chartWidth, this.chartMetaInfo.chartHeight);
-
+    canvas.width = this.chartMetaInfo.chartWidth
+    console.log(' canvas.width',  canvas.width)
     this.drawBarChart(this.context, chartData);
     this.addTitleToChart(this.context);
     this.addFooterToChart(this.context);
@@ -67,7 +73,7 @@ export class ChartComponent implements OnInit, OnChanges {
       context.lineWidth = 0.5;
       context.beginPath();
       context.moveTo(25, (20 * i) + 40);
-      context.lineTo(775, (20 * i) + 40);
+      context.lineTo(this.chartwidth - 25, (20 * i) + 40);
       context.strokeStyle = this.chartMetaInfo.leftaxisColor;
       context.stroke();
     }
