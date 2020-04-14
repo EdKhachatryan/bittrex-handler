@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  api: {
+    base: 'https://api.bittrex.com/api/v1.1/',
+    public: 'public/',
+  }
 };
 
 /*
