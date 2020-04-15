@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public marketSummeries;
   public markets$: Observable<Array<MarketModel>>;
   public filteredData;
-  public marketArray = [ 'USD-BTC', 'USD-ETH', 'USD-BSV', 'USD-USDT', 'USD-LINK', 'USD-DASH', 'USD-DCR', 'USD-TUSD', 'USD-WAXP'];
+  public marketArray = [ 'USD-BTC', 'USD-ETH', 'USD-BSV', 'USD-USDT', 'USD-LINK', 'USD-DASH', 'USD-DCR'];
 /* */
 
 
@@ -24,9 +24,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getMarkets();
     this.getMarketsSummery();
     this.metaInfo = {
-      chartWidth: (this.marketArray.length * 100 + 100),
+      chartWidth: (this.marketArray.length * 100 + 150),
       chartHeight: '500',
-      title: 'Bittrex current market data by value',
+      title: '',
       titleColor: 'white',
       titleFont: '20px sans-serif',
       columnTitleColor: 'white',
@@ -42,9 +42,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit( ) {
-    /*this.subscription = interval(5000).subscribe(() => {
+    this.subscription = interval(5000).subscribe(() => {
       this.getMarketsSummery();
-    });*/
+    });
   }
 
   ngOnDestroy() {
@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   getMarketsSummery() {
     this.dataService.getMarketSummaries().subscribe(data => {
       this.marketSummeries = data.result;
-      console.log(this.marketSummeries);
+      // console.log(this.marketSummeries);
       this.filterData();
     });
   }
@@ -65,8 +65,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   addSerries(marketName) {
     this.marketArray.push(marketName);
-    console.log(this.marketArray);
-    // this.filterData();
+    this.metaInfo.chartWidth = (this.marketArray.length * 100 + 150)
+    console.log('array after push ', this.marketArray);
+    console.log('meta info after push ', this.metaInfo);
     this.getMarketsSummery();
   }
 

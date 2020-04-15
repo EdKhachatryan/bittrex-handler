@@ -21,8 +21,8 @@ export class ChartComponent implements OnInit, OnChanges {
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     this.chartConfig(changes.chartData.currentValue);
     console.log('changes', changes);
-    this.chartwidth = changes.chartMetaInfo.currentValue.chartWidth;
-    console.log(' this.chartwidth',  this.chartwidth);
+    // this.chartwidth = changes.chartMetaInfo.currentValue.chartWidth;
+    console.log(' this.chartwidth',  this.chartMetaInfo.chartWidth);
   }
 
   ngOnInit() {
@@ -73,7 +73,7 @@ export class ChartComponent implements OnInit, OnChanges {
       context.lineWidth = 0.5;
       context.beginPath();
       context.moveTo(25, (20 * i) + 40);
-      context.lineTo(this.chartwidth - 25, (20 * i) + 40);
+      context.lineTo(this.chartMetaInfo.chartWidth - 25, (20 * i) + 40);
       context.strokeStyle = this.chartMetaInfo.leftaxisColor;
       context.stroke();
     }
